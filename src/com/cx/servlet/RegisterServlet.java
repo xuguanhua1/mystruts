@@ -1,8 +1,11 @@
 package com.cx.servlet;
 
 import com.cx.entity.User;
+import com.cx.framework.action.LoginAction;
+import com.cx.framework.action.RegisterAction;
 import com.cx.service.UserService;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,23 +21,24 @@ public class RegisterServlet extends HttpServlet {
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            //1.获取请求数据
-            String uname = request.getParameter("name");
 
-            System.out.println(uname);
+        //只有这两行代码不一样
 
-            String pwd = request.getParameter("pwd");
+        //创建action对象，调用登陆方法
+        RegisterAction registerAction = new RegisterAction();
 
-            User user = new User();
-            user.setUname(uname);
-            user.setPwd(pwd);
+        Object uri = registerAction.register(request,response);
 
-            //2.调用service
-            UserService userService = new UserService();
-            userService.register(user);
 
-            //3.跳转
-            request.getRequestDispatcher("/login.jsp").forward(request,response);
+
+
+        //跳转
+        if (uri instanceof String)
+        {
+            response.sendRedirect(request.getContextPath()+uri.toString());
+        }else {
+            ((RequestDispatcher)uri).forward(request,response);
+          }
 
         }
 

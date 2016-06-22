@@ -1,13 +1,18 @@
 package com.cx.servlet;
 
 import com.cx.entity.User;
+import com.cx.framework.action.LoginAction;
 import com.cx.service.UserService;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+
+//控制器
 
 /**
  * Created by cxspace on 16-6-21.
@@ -16,34 +21,20 @@ public class LoginServlet extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //1.获取请求数据
-        String uname = req.getParameter("name");
-        String pwd = req.getParameter("pwd");
 
-        User user = new User();
+        //创建action对象，调用登陆方法
+        LoginAction loginAction = new LoginAction();
 
-        user.setUname(uname);
+        Object uri = loginAction.login(req,resp);
 
-        user.setPwd(pwd);
-
-
-        //2.调用Service
-        UserService userService = new UserService();
-        User userInfo = userService.logion(user);
-
-        //3.跳转
-
-        if (userInfo == null)
+        //跳转
+        if (uri instanceof String)
         {
-            //登录失败
-            req.getRequestDispatcher("/login.jsp").forward(req,resp);
+            resp.sendRedirect(req.getContextPath()+uri.toString());
         }else {
-            //登录成功，保存数据到session
-            req.getSession().setAttribute("userInfo" , userInfo);
-            //到首页
-            resp.sendRedirect(req.getContextPath()+"/index.jsp");
-
+            ((RequestDispatcher)uri).forward(req,resp);
         }
+
     }
 
     @Override
