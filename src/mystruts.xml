@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<mystruts>
+    <package>
+        <!--配置文件请求路径,与处理action类的关系-->
+        <action name="login" class="com.cx.framework.action.LoginAction" method="login">
+            <result name="loginSuccess" type="redirect">/index.jsp</result>
+            <result name="loginFaild" >/login.jsp </result>
+        </action>
+
+        <!--name请求路径,处理方法名-->
+        <action name="register" class="com.cx.framework.action.RegisterAction" method="register">
+            <result name="registerSuccess">/login.jsp</result>
+        </action>
+
+    </package>
+</mystruts>

@@ -20,6 +20,12 @@ import java.io.IOException;
  */
 public class LoginAction {
 
+    public Object execute(HttpServletRequest request , HttpServletResponse response) throws ServletException , IOException
+    {
+        return null;
+    }
+
+
      //对应登录操作的方法
     public Object login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
